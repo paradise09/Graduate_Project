@@ -1,0 +1,82 @@
+2024-05-17 10:35:32,956 [INFO] 
+  _      _______      ________ _   _      _   
+ | |    |_   _\ \    / /  ____| \ | |    | |  
+ | |      | |  \ \  / /| |__  |  \| | ___| |_ 
+ | |      | |   \ \/ / |  __| | . ` |/ _ \ __|
+ | |____ _| |_   \  /  | |____| |\  |  __/ |_ 
+ |______|_____|   \/   |______|_| \_|\___|\__|                      
+    
+2024-05-17 10:35:32,957 [INFO] 
+  name: LIVENet
+  model_type: LLIE
+  datasets:[
+    train:[
+      name: Lolv1
+      low_images: ../data/our485/low
+      normal_images: ../data/our485/high
+      img_size_h: 512
+      img_size_w: 512
+      use_shuffle: True
+      batch_size: 4
+      num_workers: 4
+    ]
+    val:[
+      name: Lolv1
+      low_images: ../data/eval15/low
+      normal_images: ../data/eval15/high
+      img_size_h: 512
+      img_size_w: 512
+      use_shuffle: False
+      batch_size: 1
+      num_workers: 4
+    ]
+  ]
+  model:[
+    gray:[
+      in_nc: 3
+      out_nc: 1
+    ]
+    tranmission_map:[
+      in_nc: 3
+      out_nc: 1
+    ]
+    atmospheric_light:[
+      in_nc: 3
+      out_nc: 3
+    ]
+    refiner:[
+      in_nc: 3
+      out_nc: 3
+    ]
+    channel_prior_kernel: 1
+    tmin: 0.15
+    omega: 0.75
+    alpha: 0.4
+  ]
+  path:[
+    checkpoint_gen_network: ../checkpoints/best_gen.pth
+    checkpoint_ref_network: ../checkpoints/best_refine.pth
+    log_file: ../logs/app.log
+    train_logs: ../logs/runs/train
+    val_logs: ../logs/runs/val
+  ]
+  train:[
+    manual_seed: 42
+    optim:[
+      type: Adam
+      lr: 3e-4
+    ]
+    epochs: 1000
+    save_checkpoint: True
+    load_checkpoint: False
+    metrics:[
+      psnr: True
+      ssim: True
+    ]
+  ]
+  device: cuda:0
+
+2024-05-17 10:35:33,474 [INFO] [Info] Loading Generator checkpoints...
+2024-05-17 10:35:33,800 [INFO] [Info] Generator Weights loaded successfully
+2024-05-17 10:35:33,800 [INFO] [Info] Loading Refiner checkpoints...
+2024-05-17 10:35:33,962 [INFO] [Info] Refiner Weights loaded successfully
